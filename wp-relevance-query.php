@@ -23,40 +23,33 @@ class WP_Relevance_Query extends WP_Query {
 	function __construct( $args = array() ) {
 
 		parent::__construct( $args );
-		$this->posts = $this->get_ordered_posts( $this->posts, $args );
+		$this->modify_posts_array();
 	}
 
 	/************************************************
 	 * Query Methods
 	 ************************************************/
 
-	private function get_ordered_posts( $posts, $args ) {
 	/**
 	 * Primary Query modification method
 	 *
 	 * @return void
 	 */
+	private function modify_posts_array() {
 
 		// Add data to post objects
-		$posts = $this->add_posts_terms( $posts, $args );
-		$posts = $this->add_posts_relevance( $posts, $args );
+		$this->add_posts_terms();
+		$this->add_posts_relevance();
 
 		// Order the posts
-		$posts = $this->order_posts( $posts, $args );
+		$this->order_posts();
 
-		return $posts;
-	}
-	
-	private function order_posts( $posts, $args ) {
-
-		return $posts;
 	}
 
 	/************************************************
 	 * Post Data Methods
 	 ************************************************/
 
-	private function add_posts_terms( $posts, $args ) {
 	/**
 	 * Add terms as array to each post
 	 *
@@ -65,13 +58,12 @@ class WP_Relevance_Query extends WP_Query {
 	 *
 	 * @return void
 	 */
+	private function add_posts_terms() {
 
-		foreach ( $posts as $post ) {
-			// get terms
+		foreach ( $this->posts as $post ) {
 			$post->terms = $this->get_post_terms();
 		}
 
-		return $posts;
 	}
 
 	/**
@@ -81,28 +73,34 @@ class WP_Relevance_Query extends WP_Query {
 	 */
 	private function get_post_terms() {
 
+			$taxonomy = ''; // TODO
+			// TODO: Needs to be modified to add multiple taxonomies
+			$terms = array();
+			$terms = get_the_terms( $post->ID, $taxonomy );
+			
+			return $terms;
+
 	}
 
-	private function add_posts_relevance( $posts, $args ) {
 	/**
 	 * Add relevance to post object
 	 *
 	 * @return void
 	 */
+	private function add_posts_relevance() {
 
-		foreach ( $posts as $post ) {
-			$post->relevance = $this->calculate_post_relevance( $post, $args );
+		foreach ( $this->posts as $post ) {
+			$post->relevance = $this->calculate_post_relevance();
 		}
 
-		return $posts;
 	}
 
-	private function calculate_post_relevance( $post, $args ) {
 	/**
 	 * Calculate post relevance
 	 *
 	 * @return integer
 	 */
+	private function calculate_post_relevance() {
 	/**
 	 * Order posts
 	 *
