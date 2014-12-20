@@ -23,7 +23,7 @@ class WP_Relevance_Query extends WP_Query {
 	function __construct( $args = array() ) {
 
 		parent::__construct( $args );
-		$this->posts = $this->get_ordered_posts( $this->posts );
+		$this->posts = $this->get_ordered_posts( $this->posts, $args );
 	}
 
 	private function get_ordered_posts( $posts ) {
