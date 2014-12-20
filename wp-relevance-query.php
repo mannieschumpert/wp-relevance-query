@@ -31,6 +31,11 @@ class WP_Relevance_Query extends WP_Query {
 	 ************************************************/
 
 	private function get_ordered_posts( $posts, $args ) {
+	/**
+	 * Primary Query modification method
+	 *
+	 * @return void
+	 */
 
 		// Add data to post objects
 		$posts = $this->add_posts_terms( $posts, $args );
@@ -52,6 +57,14 @@ class WP_Relevance_Query extends WP_Query {
 	 ************************************************/
 
 	private function add_posts_terms( $posts, $args ) {
+	/**
+	 * Add terms as array to each post
+	 *
+	 * The whole term object is added for use in templates
+	 * (We're querying the post terms now, might as well avoid doing it again later)
+	 *
+	 * @return void
+	 */
 
 		foreach ( $posts as $post ) {
 			// get terms
@@ -61,11 +74,21 @@ class WP_Relevance_Query extends WP_Query {
 		return $posts;
 	}
 
+	/**
+	 * Get post terms
+	 *
+	 * @return array
+	 */
 	private function get_post_terms() {
 
 	}
 
 	private function add_posts_relevance( $posts, $args ) {
+	/**
+	 * Add relevance to post object
+	 *
+	 * @return void
+	 */
 
 		foreach ( $posts as $post ) {
 			$post->relevance = $this->calculate_post_relevance( $post, $args );
@@ -75,6 +98,16 @@ class WP_Relevance_Query extends WP_Query {
 	}
 
 	private function calculate_post_relevance( $post, $args ) {
+	/**
+	 * Calculate post relevance
+	 *
+	 * @return integer
+	 */
+	/**
+	 * Order posts
+	 *
+	 * @return void
+	 */
 
 	}
 }
