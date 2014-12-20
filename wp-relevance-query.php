@@ -70,11 +70,12 @@ class WP_Relevance_Query extends WP_Query {
 	 * Get post terms
 	 *
 	 * @return array
+	 * 
+	 * @todo Needs to be modified to add multiple taxonomies
 	 */
 	private function get_post_terms() {
 
 			$taxonomy = ''; // TODO
-			// TODO: Needs to be modified to add multiple taxonomies
 			$terms = array();
 			$terms = get_the_terms( $post->ID, $taxonomy );
 			
@@ -99,11 +100,13 @@ class WP_Relevance_Query extends WP_Query {
 	 * Calculate post relevance
 	 *
 	 * @return integer
+	 *
+	 * @todo: Needs to be modified to add multiple taxonomies
 	 */
 	private function calculate_post_relevance() {
 
 		$relevance = 0;
-		$terms = wp_list_pluck( $post->terms, 'term_id');
+		$terms = wp_list_pluck( $post->terms, 'term_id' );
 
 		foreach ( $interests as $interest ){
 
@@ -123,13 +126,14 @@ class WP_Relevance_Query extends WP_Query {
 	 * Order posts
 	 *
 	 * @return void
+	 *
+	 * @todo Needs modification for secondary sorting options
 	 */
 	private function order_posts() {
 
 		$posts = $this->posts;
 
 		// Loop through posts and add sorting flags
-		// TODO: Needs modification for secondary sorting options
 		foreach( $posts as $post => $object ){
 			$relevance[$post] = $object->relevance;
 			$post_date[$post] = $object->post_date;
