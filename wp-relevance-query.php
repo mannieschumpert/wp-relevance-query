@@ -26,7 +26,26 @@ class WP_Relevance_Query extends WP_Query {
 		$this->posts = $this->get_ordered_posts( $this->posts, $args );
 	}
 
-	private function get_ordered_posts( $posts ) {
+	/************************************************
+	 * Query Methods
+	 ************************************************/
+
+	private function get_ordered_posts( $posts, $args ) {
+
+		// Add data to post objects
+		$posts = $this->add_posts_terms( $posts, $args );
+		$posts = $this->add_posts_relevance( $posts, $args );
+
+		// Order the posts
+		$posts = $this->order_posts( $posts, $args );
+
+		return $posts;
+	}
+	
+	private function order_posts( $posts, $args ) {
+
+		return $posts;
+	}
 
 		return $posts;
 	}
