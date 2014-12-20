@@ -47,6 +47,34 @@ class WP_Relevance_Query extends WP_Query {
 		return $posts;
 	}
 
+	/************************************************
+	 * Post Data Methods
+	 ************************************************/
+
+	private function add_posts_terms( $posts, $args ) {
+
+		foreach ( $posts as $post ) {
+			// get terms
+			$post->terms = $this->get_post_terms();
+		}
+
 		return $posts;
+	}
+
+	private function get_post_terms() {
+
+	}
+
+	private function add_posts_relevance( $posts, $args ) {
+
+		foreach ( $posts as $post ) {
+			$post->relevance = $this->calculate_post_relevance( $post, $args );
+		}
+
+		return $posts;
+	}
+
+	private function calculate_post_relevance( $post, $args ) {
+
 	}
 }
