@@ -132,7 +132,7 @@ class WP_Relevance_Query extends WP_Query {
 	private function add_posts_terms() {
 
 		foreach ( $this->posts as $post ) {
-			$post->terms = $this->get_post_terms();
+			$post->terms = $this->get_post_terms( $post->ID );
 		}
 
 	}
@@ -144,7 +144,7 @@ class WP_Relevance_Query extends WP_Query {
 	 * 
 	 * @return array
 	 */
-	private function get_post_terms() {
+	private function get_post_terms( $post_id ) {
 
 			$taxonomy = ''; // TODO
 			$terms = array();
