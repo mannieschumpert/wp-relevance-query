@@ -178,19 +178,28 @@ class WP_Relevance_Query extends WP_Query {
 	 * @todo Add filter for rounding result
 	 * @todo Add filter for other grade scales?
 	 */
-	private function calculate_post_relevance() {
+	private function calculate_post_relevance( $post_terms ) {
 
-		$relevance = 0;
-		$terms = wp_list_pluck( $post->terms, 'term_id' );
+		$term_number = 0;
 
-		foreach ( $interests as $interest ){
+		foreach ( $post_terms as $taxonomy => $tax_terms ) {
 
-			if ( in_array( $interest, $terms ) ){
-				$relevance ++;
+			// TODO: needs reworked for use with slugs as well
+			$terms_arr = wp_list_pluck( $tax_terms, 'term_id' );
+
+			foreach ( $terms_arr as $term ){
+
+				if ( in_array( $term, $this->queried_terms[ $taxonomy ] ) ){
+					$term_number ++;
+				}
 			}
+
 		}
 
+		$relevance = ( $term_number / $this->total_terms ) * 100;
+
 		return $relevance;
+
 	}
 
 	/************************************************
