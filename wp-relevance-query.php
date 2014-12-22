@@ -3,7 +3,7 @@
  * Plugin Name:       WP Relevance Query
  * Plugin URI:        http://mannieschumpert.com/plugins/wp-relevance-query/
  * Description:       Extends WP_Query to allow for post queries sorted by relevance.
- * Version:           0.0.1
+ * Version:           0.1
  * Author:            Mannie Schumpert
  * Author URI:        http://mannieschumpert.com/
  * License:           GPL-2.0+
