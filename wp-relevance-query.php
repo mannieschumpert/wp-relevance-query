@@ -66,7 +66,7 @@ class WP_Relevance_Query extends WP_Query {
 	/**
 	 * Set queried_terms var
 	 *
-	 * Used in calculating relevance
+	 * Used in calculating relevance, etc
 	 *
 	 * @return void
 	 */
