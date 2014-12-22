@@ -8,6 +8,7 @@ How often do you need need to run a post query where you need to sort the result
 
 ## Usage
 Run a WP Relevance Query by instantiating a query object, just like you normally would:
+
 `$my_query = new WP_Relevance_Query( $args );`
 
 After retrieving the posts that match the given terms, for each post, the taxonomy terms are retrieved and added to the post object. The post's terms are then compared to the queried terms, and a relevance score is calculated and added to the post object. The posts are then sorted by relevance.
