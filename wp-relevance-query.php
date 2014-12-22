@@ -16,7 +16,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Initiate class
+ * WP Relevance Query class
  */
 class WP_Relevance_Query extends WP_Query {
   
@@ -53,7 +53,7 @@ class WP_Relevance_Query extends WP_Query {
 	/**
 	 * Add terms as array to each post
 	 *
-	 * The whole term object is added for use in templates
+	 * The whole term object is added for possible use in templates
 	 * (We're querying the post terms now, might as well avoid doing it again later)
 	 *
 	 * @return void
@@ -69,9 +69,9 @@ class WP_Relevance_Query extends WP_Query {
 	/**
 	 * Get post terms
 	 *
-	 * @return array
+	 * @param integer $post_id
 	 * 
-	 * @todo Needs to be modified to add multiple taxonomies
+	 * @return array
 	 */
 	private function get_post_terms() {
 
@@ -97,11 +97,15 @@ class WP_Relevance_Query extends WP_Query {
 	}
 
 	/**
-	 * Calculate post relevance
+	 * Calculate post relevance by number of queried terms
 	 *
-	 * @return integer
-	 *
-	 * @todo: Needs to be modified to add multiple taxonomies
+	 * @param array $post_terms Post's terms for current query
+	 * 
+	 * @return integer percentage grade from 1-100
+	 * 
+	 * @todo Add logic for weight-per-argument functionality
+	 * @todo Add filter for rounding result
+	 * @todo Add filter for other grade scales?
 	 */
 	private function calculate_post_relevance() {
 
@@ -125,8 +129,10 @@ class WP_Relevance_Query extends WP_Query {
 	/**
 	 * Order posts
 	 *
+	 * @link http://php.net/manual/en/function.array-multisort.php
+	 * 
 	 * @return void
-	 *
+	 * 
 	 * @todo Needs modification for secondary sorting options
 	 */
 	private function order_posts() {
