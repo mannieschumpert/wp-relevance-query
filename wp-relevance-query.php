@@ -19,11 +19,32 @@ if ( ! defined( 'WPINC' ) ) {
  * WP Relevance Query class
  */
 class WP_Relevance_Query extends WP_Query {
-  
-	function __construct( $args = array() ) {
+
+	/**
+	 * Queried terms
+	 *
+	 * These exist in other class vars, but we put them here for easier usage
+	 *
+	 * @var array
+	 */
+	var $queried_terms = array();
+
+	/**
+	 * Total terms included in query
+	 *
+	 * @var int
+	 */
+	var $total_terms = 0;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct( $args = array() ) {
 
 		parent::__construct( $args );
+		$this->set_vars();
 		$this->modify_posts_array();
+
 	}
 
 	/************************************************
