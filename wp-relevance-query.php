@@ -62,6 +62,9 @@ class WP_Relevance_Query extends WP_Query {
 	private function set_queried_terms(){
 
 		$queried_terms = array();
+
+		// Add terms as taxonomy => array( terms )
+		// TODO: extend for other query parameters, e.g. author, meta
 		foreach ( $this->query_vars['tax_query'] as $query_var => $var_data ) {
 			$queried_terms[ $var_data['taxonomy'] ] = $var_data['terms'];
 		}
@@ -81,6 +84,7 @@ class WP_Relevance_Query extends WP_Query {
 
 		$total_terms = 0;
 
+		// Add number of terms in each taxonomy to the total number of terms
 		foreach ( $this->queried_terms as $terms ) {
 			$tax_terms = count( $terms );
 			$total_terms = $total_terms + $tax_terms;
@@ -175,6 +179,7 @@ class WP_Relevance_Query extends WP_Query {
 
 		$term_number = 0;
 
+		// For each taxonomy, check for the queried terms in the post's terms
 		foreach ( $post_terms as $taxonomy => $tax_terms ) {
 
 			// TODO: needs reworked for use with slugs as well
@@ -182,6 +187,7 @@ class WP_Relevance_Query extends WP_Query {
 
 			foreach ( $terms_arr as $term ){
 
+				// If the post has the queried terms, increment the post's relevance level
 				if ( in_array( $term, $this->queried_terms[ $taxonomy ] ) ){
 					$term_number ++;
 				}
@@ -189,6 +195,7 @@ class WP_Relevance_Query extends WP_Query {
 
 		}
 
+		// Calculate relevance based on post's terms vs total queried terms
 		$relevance = ( $term_number / $this->total_terms ) * 100;
 
 		return $relevance;
