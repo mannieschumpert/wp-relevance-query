@@ -52,6 +52,35 @@ class WP_Relevance_Query extends WP_Query {
 	 ************************************************/
 
 	/**
+	 * Set class vars
+	 *
+	 * @return void
+	 */
+	private function set_vars(){
+
+		$this->set_queried_terms();
+		$this->set_total_terms();
+
+	}
+
+	/**
+	 * Set queried_terms var
+	 *
+	 * Used in calculating relevance
+	 *
+	 * @return void
+	 */
+	private function set_queried_terms(){
+
+		$queried_terms = array();
+		foreach ( $this->query_vars['tax_query'] as $query_var => $var_data ) {
+			$queried_terms[ $var_data['taxonomy'] ] = $var_data['terms'];
+		}
+
+		$this->queried_terms = $queried_terms;
+
+	}
+
 	 * Primary Query modification method
 	 *
 	 * @return void
