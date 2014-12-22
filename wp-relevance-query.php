@@ -143,14 +143,18 @@ class WP_Relevance_Query extends WP_Query {
 	 * @param integer $post_id
 	 * 
 	 * @return array
+	 *
+	 * @todo Needs reworking for adding other query argument types
 	 */
 	private function get_post_terms( $post_id ) {
 
-			$taxonomy = ''; // TODO
-			$terms = array();
-			$terms = get_the_terms( $post->ID, $taxonomy );
-			
-			return $terms;
+		$post_terms = array();
+
+		foreach ( $this->queried_terms as $taxonomy => $terms ) {
+			$post_terms[ $taxonomy ] = get_the_terms( $post_id, $taxonomy );
+		}
+		
+		return $post_terms;
 
 	}
 
