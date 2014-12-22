@@ -42,7 +42,8 @@ class WP_Relevance_Query extends WP_Query {
 	public function __construct( $args = array() ) {
 
 		parent::__construct( $args );
-		$this->set_vars();
+		$this->set_queried_terms();
+		$this->set_total_terms();
 		$this->modify_posts_array();
 
 	}
@@ -50,18 +51,6 @@ class WP_Relevance_Query extends WP_Query {
 	/************************************************
 	 * Query Methods
 	 ************************************************/
-
-	/**
-	 * Set class vars
-	 *
-	 * @return void
-	 */
-	private function set_vars(){
-
-		$this->set_queried_terms();
-		$this->set_total_terms();
-
-	}
 
 	/**
 	 * Set queried_terms var
