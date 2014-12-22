@@ -81,6 +81,27 @@ class WP_Relevance_Query extends WP_Query {
 
 	}
 
+	/**
+	 * Set total_terms var
+	 *
+	 * Used in calculating relevance
+	 * 
+	 * @return void
+	 */
+	private function set_total_terms(){
+
+		$total_terms = 0;
+
+		foreach ( $this->queried_terms as $terms ) {
+			$tax_terms = count( $terms );
+			$total_terms = $total_terms + $tax_terms;
+		}
+
+		$this->total_terms = $total_terms;
+
+	}
+
+	/**
 	 * Primary Query modification method
 	 *
 	 * @return void
