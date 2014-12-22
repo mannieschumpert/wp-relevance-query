@@ -13,7 +13,15 @@ Run a WP Relevance Query by instantiating a query object, just like you normally
 
 ## Behavior
 - If `orderby` is included in query arguments, that will be the secondary post order. (Posts are always ordered first by relevance.)
+(orderby functionality isn't available yet - secondary ordering currently defaults to post_date)
+
+## Warnings
+Querying via WP_Relevance_Query has the potential to be a very, very expensive database operation. Be sure to cache whenever possible.
 
 #### TODO
+- Allow query by term slugs (currently only uses ID)
 - Meta and author queries included in calculating relevance
 - Possibly add parameters for giving more weight to certain arguments (e.g. author more important to relevance than terms)
+- Add option to only return posts above a given relevance score
+- Add template tag for printing post's relevance score
+- Add caching methods?
