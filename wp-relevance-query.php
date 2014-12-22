@@ -220,15 +220,16 @@ class WP_Relevance_Query extends WP_Query {
 		$posts = $this->posts;
 
 		// Loop through posts and add sorting flags
-		foreach( $posts as $post => $object ){
-			$relevance[$post] = $object->relevance;
-			$post_date[$post] = $object->post_date;
+		foreach ( $posts as $post => $object ) {
+			$relevance[ $post ] = $object->relevance;
+			$post_date[ $post ] = $object->post_date;
 		}
 
 		// holy cow, this is magic
 		array_multisort( $relevance, SORT_NUMERIC, SORT_DESC, $post_date, SORT_STRING, SORT_DESC, $posts );
 
 		$this->posts = $posts;
+
 	}
 
 }
