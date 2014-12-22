@@ -162,7 +162,7 @@ class WP_Relevance_Query extends WP_Query {
 	private function add_posts_relevance() {
 
 		foreach ( $this->posts as $post ) {
-			$post->relevance = $this->calculate_post_relevance();
+			$post->relevance = $this->calculate_post_relevance( $post->terms );
 		}
 
 	}
