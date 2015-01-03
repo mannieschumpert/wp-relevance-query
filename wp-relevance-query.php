@@ -3,7 +3,7 @@
  * Plugin Name:       WP Relevance Query
  * Plugin URI:        http://mannieschumpert.com/plugins/wp-relevance-query/
  * Description:       Extends WP_Query to allow for post queries sorted by relevance.
- * Version:           0.1
+ * Version:           0.1.2
  * Author:            Mannie Schumpert
  * Author URI:        http://mannieschumpert.com/
  * License:           GPL-2.0+
@@ -37,10 +37,18 @@ class WP_Relevance_Query extends WP_Query {
 	var $total_terms = 0;
 
 	/**
+	 * Orderby parameter stored for later use
+	 *
+	 * @var mixed
+	 */
+	var $orderby;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct( $args = array() ) {
 
+		$this->process_args( $args );
 		parent::__construct( $args );
 		$this->set_queried_terms();
 		$this->set_total_terms();
@@ -51,6 +59,26 @@ class WP_Relevance_Query extends WP_Query {
 	/************************************************
 	 * Query Methods
 	 ************************************************/
+
+	/**
+	 * Process query arguments
+	 *
+	 * @return array
+	 */
+	private function process_args( $args ){
+
+		if ( isset( $args['orderby'] ) ){
+
+			// Save orderby parameter to class var
+			$this->orderby = $args['orderby'];
+
+			// Unset from main query
+			// (posts will be re-ordered later, no reason to give sql query directives for order)
+			unset( $args['orderby'] );
+		};
+
+		return $args;
+	}
 
 	/**
 	 * Set queried_terms var
@@ -212,23 +240,77 @@ class WP_Relevance_Query extends WP_Query {
 	 * @link http://php.net/manual/en/function.array-multisort.php
 	 * 
 	 * @return void
-	 * 
-	 * @todo Needs modification for secondary sorting options
 	 */
 	private function order_posts() {
 
 		$posts = $this->posts;
+		$orderby = $this->orderby();
 
+		// --------------------------------------------
 		// Loop through posts and add sorting flags
+		// --------------------------------------------
 		foreach ( $posts as $post => $object ) {
-			$relevance[ $post ] = $object->relevance;
-			$post_date[ $post ] = $object->post_date;
+			
+			foreach ( $orderby as $i => $args ){
+				$key = 'key'.$i;
+				${$key}[ $post ] = $object->{$args['key']};
+			}
+			
 		}
 
-		// holy cow, this is magic
-		array_multisort( $relevance, SORT_NUMERIC, SORT_DESC, $post_date, SORT_STRING, SORT_DESC, $posts );
+		// --------------------------------------------
+		// Assemble multisort parameters
+		// --------------------------------------------
+		$orderers = array();
 
+		foreach ( $orderby as $i => $args ){
+
+			// Names for variable variables
+			$key = 'key'.$i;
+			$sort = 'sort'.$i;
+			$orderer = 'orderer'.$i;
+
+			${$sort} = array( 
+				'order' => $args['order'],
+				'by' => SORT_STRING
+				);
+
+			${$orderer} = array( &${$key}, &${$sort}['order'], &${$sort}['by'] );
+			$orderers = array_merge( &$orderers, &${$orderer} );
+
+		}
+
+		call_user_func_array( 'array_multisort', array_merge( &$orderers, array( &$posts ) ) );
+		
 		$this->posts = $posts;
+
+	}
+
+	/**
+	 * Parse any existing orderby parameters
+	 *
+	 * @return array
+	 */
+	private function orderby() {
+
+		$orderby = $this->orderby;
+
+		if ( empty( $orderby ) ) {
+			$orderby = array( 
+				array(
+					'key' => 'relevance',
+					'order' => SORT_DESC
+					),
+				array(
+					'key' => 'post_date',
+					'order' => SORT_DESC
+					)
+				);
+		}
+
+
+		return $orderby;
+
 
 	}
 
