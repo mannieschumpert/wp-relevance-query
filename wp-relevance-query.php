@@ -37,10 +37,18 @@ class WP_Relevance_Query extends WP_Query {
 	var $total_terms = 0;
 
 	/**
+	 * Orderby parameter stored for later use
+	 *
+	 * @var mixed
+	 */
+	var $orderby;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct( $args = array() ) {
 
+		$this->process_args( $args );
 		parent::__construct( $args );
 		$this->set_queried_terms();
 		$this->set_total_terms();
@@ -51,6 +59,26 @@ class WP_Relevance_Query extends WP_Query {
 	/************************************************
 	 * Query Methods
 	 ************************************************/
+
+	/**
+	 * Process query arguments
+	 *
+	 * @return array
+	 */
+	private function process_args( $args ){
+
+		if ( isset( $args['orderby'] ) ){
+
+			// Save orderby parameter to class var
+			$this->orderby = $args['orderby'];
+
+			// Unset from main query
+			// (posts will be re-ordered later, no reason to give sql query directives for order)
+			unset( $args['orderby'] );
+		};
+
+		return $args;
+	}
 
 	/**
 	 * Set queried_terms var
